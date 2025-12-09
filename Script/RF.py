@@ -30,11 +30,15 @@ class RandomForestModel(BaseModel):
         self._init_params.update(kwargs)
 
     def build_model(self):
+        """Hàm xây dựng mô hình
+        """
         self._model = RandomForestClassifier(**self._init_params)
         return self
     
     def plot_feature_importance(self):
-        importances = self._model.feature_importances_
+        """Hàm vẽ biểu đồ thể hiện độ quan trọng của từng đặc trung dữ liệu
+        """
+        importances = self.feature_importances()
         plt.figure(figsize=(12, 6))
         plt.barh(self._X.columns, importances)
         plt.title(f"Random Forest")

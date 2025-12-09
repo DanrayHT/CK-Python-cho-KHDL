@@ -206,6 +206,13 @@ if __name__ == "__main__":
                 
                 metric = model.evaluate()
                 cv_score = model.cross_validate(cv=5)
+                
+                # LƯU KẾT QUẢ THỰC NGHIỆM VÀO FILE CSV
+                model.save_experiment_results(
+                    filepath="models_data/experiment_results.csv",
+                    format="csv"
+                )
+                logger.info(f"Đã lưu kết quả thực nghiệm của {model.get_name()}")
 
             # Chọn best model
             logger.info("\nBƯỚC 5: Lựa chọn mô hình tốt nhất")

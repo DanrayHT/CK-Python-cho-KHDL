@@ -115,19 +115,23 @@ Bạn có thể ghi đè các tham số trong file config bằng các cờ (flag
 
   * `--config`: Đường dẫn file config khác.
   * `--input_file`: Đường dẫn file dataset.
+  * `--random_state`: Chọn seed để có thể tái tạo kết quả (`int` hoặc `None` để hoàn toàn ngẫu nhiên).
+  * `--missing_strategy_num`: Cách xử lý biến numeric (`mean`, `median`, `most_frequent`).
+  * `--missing_strategy_cat`: Cách xử lý biến category (`most_frequent`, `constant`).
+  * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`int`)
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
 
 **Ví dụ 1: Thay đổi chiến lược xử lý dữ liệu**
 
 ```bash
-python Script/main.py --outlier_strategy drop --detection_params 3.0
+python main.py --outlier_strategy drop --detection_params 3.0
 ```
 
 **Ví dụ 2: Dự đoán nhanh cho một bệnh nhân khác**
 
 ```bash
-python Script/main.py --patient_info "60, 'Male', 'Cleveland', 'asymptomatic', 140.0, 260.0, False, 'normal', 150.0, True, 2.0, 'flat', 1.0, 'normal', 0"
+python main.py --patient_info "60, 'Male', 'Cleveland', 'asymptomatic', 140.0, 260.0, False, 'normal', 150.0, True, 2.0, 'flat', 1.0, 'normal', 0"
 ```
 
 -----

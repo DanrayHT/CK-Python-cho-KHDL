@@ -1,0 +1,144 @@
+2025-12-09 20:43:24 - __main__ - INFO - ================================================================================
+2025-12-09 20:43:24 - __main__ - INFO - MODEL TRAINING PIPELINE STARTED
+2025-12-09 20:43:24 - __main__ - INFO - ================================================================================
+2025-12-09 20:43:24 - __main__ - INFO - STEP 1: Loading configuration and command-line arguments
+2025-12-09 20:43:24 - __main__ - INFO - Input file: Data/heart_disease_uci.csv
+2025-12-09 20:43:24 - __main__ - INFO - Model selection metric: recall
+2025-12-09 20:43:24 - __main__ - INFO - 
+STEP 2: Data preprocessing
+2025-12-09 20:43:24 - __main__ - INFO - Loading data...
+2025-12-09 20:43:24 - Script.DP - INFO - Đã xóa cột 'id'
+2025-12-09 20:43:24 - Script.DP - INFO - Phát hiện - Numeric: 6, Categorical: 8, Datetime: 0
+2025-12-09 20:43:24 - Script.DP - INFO - Đã load dữ liệu thành công: (920, 15)
+2025-12-09 20:43:24 - Script.DP - INFO - Bắt đầu auto preprocessing pipeline...
+2025-12-09 20:43:24 - Script.DP - INFO - Bắt đầu xử lí missing values...
+2025-12-09 20:43:24 - Script.DP - INFO - Hoàn tất xử lí missing. Còn lại: 0
+2025-12-09 20:43:25 - Script.DP - INFO - Tìm thấy 257 outliers
+2025-12-09 20:43:25 - Script.DP - INFO - Bắt đầu quy trình phát hiện và xử lí outliers cho 6 cột số.
+2025-12-09 20:43:25 - Script.DP - INFO - Hoàn tất phát hiện. Tìm thấy tổng cộng 257 outliers trong 6 cột.
+2025-12-09 20:43:25 - Script.DP - INFO - Hoàn tất xử lí outliers tổng thể.
+2025-12-09 20:43:25 - Script.DP - INFO - Label Encoding: 'sex' (2 values)
+2025-12-09 20:43:25 - Script.DP - INFO - OneHot Encoding: 'dataset' (4 values -> 3 cols)
+2025-12-09 20:43:25 - Script.DP - INFO - OneHot Encoding: 'cp' (4 values -> 3 cols)
+2025-12-09 20:43:25 - Script.DP - INFO - Label Encoding: 'fbs' (2 values)
+2025-12-09 20:43:25 - Script.DP - INFO - OneHot Encoding: 'restecg' (3 values -> 2 cols)
+2025-12-09 20:43:25 - Script.DP - INFO - Label Encoding: 'exang' (2 values)
+2025-12-09 20:43:25 - Script.DP - INFO - OneHot Encoding: 'slope' (3 values -> 2 cols)
+2025-12-09 20:43:25 - Script.DP - INFO - OneHot Encoding: 'thal' (3 values -> 2 cols)
+2025-12-09 20:43:25 - Script.DP - INFO - Phát hiện - Numeric: 21, Categorical: 0, Datetime: 0
+2025-12-09 20:43:25 - Script.DP - INFO - Đã chuẩn hóa 21 cột bằng STANDARD
+2025-12-09 20:43:25 - Script.DP - INFO - Hoàn thành preprocessing. Shape: (920, 22)
+2025-12-09 20:43:25 - Script.DP - INFO - Đã lưu vào heart_disease_processed.csv
+2025-12-09 20:43:25 - __main__ - INFO - 
+STEP 3: Preparing data for modeling
+2025-12-09 20:43:25 - __main__ - INFO - Features shape: (920, 21), Target distribution: {1: 509, 0: 411}
+2025-12-09 20:43:25 - __main__ - INFO - 
+STEP 4: Training and optimizing models
+2025-12-09 20:43:25 - __main__ - INFO - Training 4 models...
+2025-12-09 20:43:25 - __main__ - INFO - 
+============================================================
+2025-12-09 20:43:25 - __main__ - INFO - Training model: LogisticRegression
+2025-12-09 20:43:25 - __main__ - INFO - ============================================================
+2025-12-09 20:43:25 - Script.model - INFO - [LogisticRegression] Data split completed: Training size=644, Test size=276
+2025-12-09 20:43:25 - Script.model - INFO - [LogisticRegression] Starting hyperparameter optimization using GRID search...
+2025-12-09 20:43:25 - Script.model - INFO - [LogisticRegression] Parameter grid: {'C': [0.01, 0.1, 1, 10], 'penalty': ['l2'], 'max_iter': [500, 1000]}
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Optimization completed!
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Best parameters: {'C': 0.01, 'max_iter': 500, 'penalty': 'l2'}
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Best CV score (recall): 0.8904
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Starting model training...
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Training completed successfully at 2025-12-09 20:43:26.153907
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Model saved successfully to models_all/LogisticRegression.pkl
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] Running 5-fold cross-validation...
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] CV scores: [0.82608696 0.6576087  0.9076087  0.86956522 0.6576087 ]
+2025-12-09 20:43:26 - Script.model - INFO - [LogisticRegression] CV mean: 0.7837 (+/- 0.1061)
+2025-12-09 20:43:26 - __main__ - INFO - 
+============================================================
+2025-12-09 20:43:26 - __main__ - INFO - Training model: SVM
+2025-12-09 20:43:26 - __main__ - INFO - ============================================================
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Data split completed: Training size=644, Test size=276
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Starting hyperparameter optimization using GRID search...
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Parameter grid: {'C': [0.1, 1, 10], 'gamma': ['scale', 'auto'], 'kernel': ['rbf']}
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Optimization completed!
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Best parameters: {'C': 0.1, 'gamma': 'scale', 'kernel': 'rbf'}
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Best CV score (recall): 0.9298
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Starting model training...
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Training completed successfully at 2025-12-09 20:43:26.274613
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Model saved successfully to models_all/SVM.pkl
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] Running 5-fold cross-validation...
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] CV scores: [0.82065217 0.64673913 0.93478261 0.92391304 0.64673913]
+2025-12-09 20:43:26 - Script.model - INFO - [SVM] CV mean: 0.7946 (+/- 0.1271)
+2025-12-09 20:43:26 - __main__ - INFO - 
+============================================================
+2025-12-09 20:43:26 - __main__ - INFO - Training model: RandomForest
+2025-12-09 20:43:26 - __main__ - INFO - ============================================================
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Data split completed: Training size=644, Test size=276
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Starting hyperparameter optimization using GRID search...
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Parameter grid: {'n_estimators': [50, 100, 200], 'max_depth': [None, 5, 10]}
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Optimization completed!
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Best parameters: {'max_depth': 5, 'n_estimators': 100}
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Best CV score (recall): 0.8790
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Starting model training...
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Training completed successfully at 2025-12-09 20:43:26.965029
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Model saved successfully to models_all/RandomForest.pkl
+2025-12-09 20:43:26 - Script.model - INFO - [RandomForest] Running 5-fold cross-validation...
+2025-12-09 20:43:27 - Script.model - INFO - [RandomForest] CV scores: [0.79891304 0.61956522 0.90217391 0.86956522 0.64673913]
+2025-12-09 20:43:27 - Script.model - INFO - [RandomForest] CV mean: 0.7674 (+/- 0.1149)
+2025-12-09 20:43:27 - __main__ - INFO - 
+============================================================
+2025-12-09 20:43:27 - __main__ - INFO - Training model: XGBoost
+2025-12-09 20:43:27 - __main__ - INFO - ============================================================
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Data split completed: Training size=644, Test size=276
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Starting hyperparameter optimization using GRID search...
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Parameter grid: {'n_estimators': [50, 100, 200], 'learning_rate': [0.01, 0.1, 0.2], 'max_depth': [3, 6, 9]}
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Optimization completed!
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Best parameters: {'learning_rate': 0.01, 'max_depth': 6, 'n_estimators': 50}
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Best CV score (recall): 0.8612
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Starting model training...
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Training completed successfully at 2025-12-09 20:43:27.559583
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Model saved successfully to models_all/XGBoost.pkl
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] Running 5-fold cross-validation...
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] CV scores: [0.74456522 0.73913043 0.61956522 0.54891304 0.58695652]
+2025-12-09 20:43:27 - Script.model - INFO - [XGBoost] CV mean: 0.6478 (+/- 0.0800)
+2025-12-09 20:43:27 - __main__ - INFO - 
+STEP 5: Selecting best model
+2025-12-09 20:43:27 - __main__ - INFO - Best model selected: SVM
+2025-12-09 20:43:27 - __main__ - INFO - Best recall: 0.8954
+2025-12-09 20:43:27 - __main__ - INFO - 
+STEP 6: Predicting for new patient
+2025-12-09 20:43:27 - Script.DP - INFO - Bắt đầu preprocess bệnh nhân mới: (1, 15)
+2025-12-09 20:43:27 - Script.DP - INFO - Label encoded 'sex'
+2025-12-09 20:43:27 - Script.DP - INFO - OneHot encoded 'dataset'
+2025-12-09 20:43:27 - Script.DP - INFO - OneHot encoded 'cp'
+2025-12-09 20:43:27 - Script.DP - INFO - Label encoded 'fbs'
+2025-12-09 20:43:27 - Script.DP - INFO - OneHot encoded 'restecg'
+2025-12-09 20:43:27 - Script.DP - INFO - Label encoded 'exang'
+2025-12-09 20:43:27 - Script.DP - INFO - OneHot encoded 'slope'
+2025-12-09 20:43:27 - Script.DP - INFO - OneHot encoded 'thal'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'age'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'sex'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'trestbps'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'chol'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'fbs'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'thalch'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'exang'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'oldpeak'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'ca'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'dataset_Hungary'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'dataset_Switzerland'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'dataset_VA Long Beach'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'cp_atypical angina'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'cp_non-anginal'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'cp_typical angina'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'restecg_normal'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'restecg_st-t abnormality'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'slope_flat'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'slope_upsloping'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'thal_normal'
+2025-12-09 20:43:27 - Script.DP - INFO - Scaled 'thal_reversable defect'
+2025-12-09 20:43:27 - Script.DP - INFO - Hoàn thành preprocess. Shape: (1, 21)
+2025-12-09 20:43:27 - __main__ - INFO - Prediction: 0, Probability: [0.69094887 0.30905113]
+2025-12-09 20:43:27 - __main__ - INFO - 
+================================================================================
+2025-12-09 20:43:27 - __main__ - INFO - FINAL RESULTS
+2025-12-09 20:43:27 - __main__ - INFO - ================================================================================
+2025-12-09 20:43:27 - __main__ - INFO - Training log saved to: model_training.log

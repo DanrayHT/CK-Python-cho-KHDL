@@ -37,7 +37,7 @@ class RandomForestModel(BaseModel):
         importances = self._model.feature_importances_
         plt.figure(figsize=(12, 6))
         plt.barh(self._X.columns, importances)
-        plt.title(f"Feature Importances (Tree-based Model)")
+        plt.title(f"Random Forest")
         plt.xlabel("Importance")
         plt.tight_layout()
         plt.show()

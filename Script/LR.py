@@ -45,7 +45,7 @@ class LogisticRegressionModel(BaseModel):
         coefs = self._model.coef_[0]
         plt.figure(figsize=(12, 6))
         plt.barh(self._X.columns, coefs)
-        plt.title(f"Coefficients (Linear Model)")
+        plt.title(f"Logistic RegressionModel")
         plt.xlabel("Coefficient Value")
         plt.tight_layout()
         plt.show()

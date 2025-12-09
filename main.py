@@ -28,7 +28,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 logger.info("=" * 80)
-logger.info("MODEL TRAINING PIPELINE STARTED")
+logger.info("PIPELINE HUẤN LUYỆN MÔ HÌNH BẮT ĐẦU")
 logger.info("=" * 80)
 
 processed_df = None
@@ -40,7 +40,7 @@ def load_config():
     """Đọc cấu hình từ file .ini được chỉ định và xử lý đối số dòng lệnh."""
     
     # Thiết lập Argparse (Đọc trước để lấy đường dẫn file config)
-    parser = argparse.ArgumentParser(description="Model Training and Prediction Script.")
+    parser = argparse.ArgumentParser(description="Script Huấn Luyện Mô Hình và Dự Đoán.")
     
     # THÊM DÒNG MỚI: Đối số cho đường dẫn file cấu hình
     parser.add_argument('--config', type=str, default='configs/default.ini',
@@ -125,24 +125,24 @@ if __name__ == "__main__":
     original_stdout = sys.stdout
     try:
         # --- BƯỚC 1: ĐỌC CẤU HÌNH VÀ THAM SỐ DÒNG LỆNH ---
-        logger.info("STEP 1: Loading configuration and command-line arguments")
+        logger.info("BƯỚC 1: Đọc cấu hình và tham số dòng lệnh")
         preprocessing_params, patient_info, model_selection_params = load_config()
 
         input_file = preprocessing_params['input_file']
-        logger.info(f"Input file: {input_file}")
-        logger.info(f"Model selection metric: {model_selection_params['metric']}")
+        logger.info(f"File đầu vào: {input_file}")
+        logger.info(f"Chỉ số lựa chọn mô hình: {model_selection_params['metric']}")
         
         # Tắt stdout tạm thời
         sys.stdout = open(os.devnull, 'w')
         
         try:
             # Khởi tạo và xử lý dữ liệu với các tham số đã đọc
-            logger.info("\nSTEP 2: Data preprocessing")
+            logger.info("\nBƯỚC 2: Tiền xử lý dữ liệu")
             preprocessor_obj = DataPreprocessor(
                 target_column='num', 
                 random_state=preprocessing_params['random_state']
             )
-            logger.info("Loading data...")
+            logger.info("Đang tải dữ liệu...")
             preprocessor_obj.load_data(input_file)
             
             # --- Thực thi Pipeline Tiền xử lý Tự động với các tham số đã đọc ---
@@ -160,14 +160,14 @@ if __name__ == "__main__":
 ####################################################################################################################
 
             # Tách X và y
-            logger.info("\nSTEP 3: Preparing data for modeling")
+            logger.info("\nBƯỚC 3: Chuẩn bị dữ liệu cho mô hình")
             X = processed_df.drop(columns=["num"])
             y_bin = (processed_df["num"] > 0).astype(int)
-            logger.info(f"Features shape: {X.shape}, Target distribution: {y_bin.value_counts().to_dict()}")
+            logger.info(f"Kích thước đặc trưng: {X.shape}, Phân bố nhãn: {y_bin.value_counts().to_dict()}")
             rs = preprocessing_params['random_state']
 
             # Danh sách các model
-            logger.info("\nSTEP 4: Training and optimizing models")
+            logger.info("\nBƯỚC 4: Huấn luyện và tối ưu hóa mô hình")
             models = [
                 LogisticRegressionModel(X=X, y=y_bin, C=1.0, penalty="l2", max_iter=1000, random_state=rs),
                 SVMModel(X=X, y=y_bin, C=1.0, kernel="rbf", probability=True, random_state=rs),
@@ -183,10 +183,10 @@ if __name__ == "__main__":
             # tạo folder save
             save_folder = "models_all/"
             # Train và evaluate models
-            logger.info(f"Training {len(models)} models...")
+            logger.info(f"Đang huấn luyện {len(models)} mô hình...")
             for model in models:
                 logger.info(f"\n{'='*60}")
-                logger.info(f"Training model: {model.get_name()}")
+                logger.info(f"Đang huấn luyện mô hình: {model.get_name()}")
                 logger.info(f"{'='*60}")
                 model.split_data()
                 # Tối ưu siêu tham số nếu có param_grid
@@ -208,12 +208,12 @@ if __name__ == "__main__":
                 cv_score = model.cross_validate(cv=5)
 
             # Chọn best model
-            logger.info("\nSTEP 5: Selecting best model")
+            logger.info("\nBƯỚC 5: Lựa chọn mô hình tốt nhất")
             test = ModelSelector(models=models, metric=model_selection_params['metric'])
             test.set_best_model()
             best_model = test.get_best_model()[0]["model"]
-            logger.info(f"Best model selected: {best_model.get_name()}")
-            logger.info(f"Best {model_selection_params['metric']}: {test.get_best_model()[0]['score']:.4f}")
+            logger.info(f"Mô hình tốt nhất đã chọn: {best_model.get_name()}")
+            logger.info(f"{model_selection_params['metric']} tốt nhất: {test.get_best_model()[0]['score']:.4f}")
 
 ####################################################################################################################
 
@@ -221,7 +221,7 @@ if __name__ == "__main__":
             # patient_info đã được load từ file .ini hoặc từ đối số dòng lệnh
             
             # Preprocess bệnh nhân mới
-            logger.info("\nSTEP 6: Predicting for new patient")
+            logger.info("\nBƯỚC 6: Dự đoán cho bệnh nhân mới")
             patient_info_df = preprocessor.preprocess_new_patient(
                 new_patient_data=patient_info,
                 processed_df=processed_data
@@ -230,7 +230,7 @@ if __name__ == "__main__":
             # Dự đoán
             prediction = best_model.predict(patient_info_df)[0]
             proba = best_model.predict_proba(patient_info_df)[0]
-            logger.info(f"Prediction: {prediction}, Probability: {proba}")
+            logger.info(f"Dự đoán: {prediction}, Xác suất: {proba}")
             
         finally:
             # Khôi phục stdout
@@ -241,11 +241,11 @@ if __name__ == "__main__":
         labels = {0: "Không bệnh", 1: "Có bệnh"}
         
         logger.info("\n" + "="*80)
-        logger.info("FINAL RESULTS")
+        logger.info("KẾT QUẢ CUỐI CÙNG")
         logger.info("="*80)
         print(f"Dự đoán: **{labels[prediction]}**")
         print(f"Xác suất dự đoán: Không bệnh = {proba[0]:.2%}, Có bệnh = {proba[1]:.2%}")
-        logger.info(f"Training log saved to: {log_filename}")
+        logger.info(f"Log huấn luyện đã lưu tại: {log_filename}")
 
     except Exception as e:
         if sys.stdout != original_stdout:

@@ -120,7 +120,7 @@ Bạn có thể ghi đè các tham số trong file config bằng các cờ (flag
   * `--random_state`: Chọn seed để có thể tái tạo kết quả (`int` hoặc `None` để hoàn toàn ngẫu nhiên).
   * `--missing_strategy_num`: Cách xử lý biến numeric (`mean`, `median`, `most_frequent`).
   * `--missing_strategy_cat`: Cách xử lý biến category (`most_frequent`, `constant`).
-  * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`int`)
+  * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`float`)
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
 

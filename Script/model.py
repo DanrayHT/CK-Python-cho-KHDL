@@ -202,7 +202,7 @@ class BaseModel:
             NotFittedError: chưa huấn luyện mô hình
         """
         if not self.is_fitted():
-            raise NotFittedError(f"{self.name} Chưa được huấn luyện.")
+            raise NotFittedError("Mô hình chưa được huấn luyện.")
         X_np = _to_numpy(X)
         return self._model.predict(X_np)
 
@@ -243,14 +243,14 @@ class BaseModel:
         """
         if X is None or y is None:
             if self.__X_test is None or self.__y_test is None:
-                raise ValueError("No test data available. Provide X and y or call split_data() earlier.")
+                raise ValueError("Thiếu dữ liệu truyền vào. Truyền lại dữ liệu hoặc thực hiện split_data() trước")
             X = self.__X_test
             y = self.__y_test
         X_np = _to_numpy(X)
         y_np = _to_numpy(y)
 
         if not self.is_fitted():
-            raise NotFittedError("Model not fitted yet")
+            raise NotFittedError("Mô hình chưa được huấn luyện")
 
         y_pred = self._model.predict(X_np)
         results: Dict[str, float] = {}
@@ -364,7 +364,7 @@ class BaseModel:
         if self._model is None:
             self.build_model()
         if self._X is None or self._y is None:
-            raise ValueError("Provide X and y at init or before calling cross_validate()")
+            raise ValueError("Dữ liệu chưa được truyền vào. Truyền lại dữ liệu hoặc split_data() trước")
         X_np = _to_numpy(self._X)
         y_np = _to_numpy(self._y)
         logger.info(f"[{self.name}] Chạy cross-validation với {cv} fold...")

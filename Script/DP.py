@@ -63,26 +63,18 @@ class DataPreprocessor:
     def _setup_logging(self):
         """
         Thiết lập logging system
-        Lưu logs vào file preprocessing.log và hiển thị trên console
+        Sử dụng logger chung của module để ghi vào cùng file với model training
         """
-        logger_name = f"{__name__}_{id(self)}"
-        self.logger = logging.getLogger(logger_name)
+        # Sử dụng logger chung từ module thay vì tạo riêng
+        self.logger = logging.getLogger(__name__)
         
-        if not self.logger.handlers:
-            self.logger.setLevel(logging.INFO)
-            
-            # Format cho logs
-            formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-            
-            # Handler 1: Xuất ra console
-            console_handler = logging.StreamHandler()
-            console_handler.setFormatter(formatter)
-            self.logger.addHandler(console_handler)
-            
-            # Handler 2: Lưu vào file preprocessing.log
-            file_handler = logging.FileHandler('preprocessing.log', mode='a', encoding='utf-8')
-            file_handler.setFormatter(formatter)
-            self.logger.addHandler(file_handler)
+        # Nếu chưa có handler nào (logging chưa được config), thiết lập basic config
+        if not logging.getLogger().handlers:
+            logging.basicConfig(
+                level=logging.INFO,
+                format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                datefmt='%Y-%m-%d %H:%M:%S'
+            )
 
 
     # ============================================================

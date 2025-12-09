@@ -36,10 +36,12 @@ class XGBoostModel(BaseModel):
         return self
     
     def plot_feature_importance(self):
+        """Hàm vẽ biểu đồ thể hiện độ quan trọng của từng đặc trưng dữ liệu
+        """
         try:
             booster = self._model.get_booster()
             scores = booster.get_score(importance_type="gain")
-            # Align keys f0,f1,f2... với feature names
+            # Align keys f0,f1,f2... với feature name
             importances = [scores.get(f"f{i}", 0) for i in range(len(self._X.columns))]
 
             plt.figure(figsize=(12, 6))

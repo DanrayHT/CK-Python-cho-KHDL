@@ -6,11 +6,11 @@ Dự án này là bài tập cuối kỳ môn **Lập trình Python cho Khoa h�
 
 ## 1. Thông tin thành viên
 
-| STT | Họ và tên | Mã số sinh viên |
-|:---:|:---|:---:|
-| 1 | [Tên thành viên 1] | [MSSV 1] |
-| 2 | [Tên thành viên 2] | [MSSV 2] |
-| 3 | [Tên thành viên 3] | [MSSV 3] |
+| Họ và tên | Mã số sinh viên |
+|:---|:---:|
+| Đỗ Lê Nguyên Đan | 23280044 |
+| Lương Lê Công Hạnh | 23280057 |
+| Âu Dương Khả | 23280063 |
 
 ---
 

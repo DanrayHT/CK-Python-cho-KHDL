@@ -49,6 +49,7 @@ class SVMModel(BaseModel):
         r = permutation_importance(self._model, X_np, self._y, n_repeats=15, random_state=42)
     
         plt.figure(figsize=(12, 6))
+        plt.title(f"SVM Model")
         plt.barh(self._X.columns if isinstance(self._X, pd.DataFrame) else range(X_np.shape[1]), r.importances_mean)
         plt.xlabel("Importance")
         plt.tight_layout()

@@ -1,6 +1,6 @@
 import configparser
 import argparse
-import ast  # Dùng để chuyển đổi chuỗi patient_data thành list
+import ast
 from Script.DP import DataPreprocessor
 from Script.LR import LogisticRegressionModel
 from Script.SVM import SVMModel
@@ -11,11 +11,6 @@ import sys
 import os
 import logging
 import warnings
-from pathlib import Path
-
-project_root = str(Path(__file__).parent.parent.absolute())
-if project_root not in sys.path:
-	sys.path.insert(0, project_root)
 
 ####################################################################################################################
 

@@ -140,13 +140,14 @@ if __name__ == "__main__":
             # Tách X và y
             X = processed_df.drop(columns=["num"])
             y_bin = (processed_df["num"] > 0).astype(int)
+            rs = preprocessing_params['random_state']
 
             # Danh sách các model
             models = [
-                LogisticRegressionModel(X=X, y=y_bin, C=1.0, penalty="l2", max_iter=1000),
-                SVMModel(X=X, y=y_bin, C=1.0, kernel="rbf", probability=True),
-                RandomForestModel(X=X, y=y_bin, n_estimators=1000, max_depth=None),
-                XGBoostModel(X=X, y=y_bin, n_estimators=2000, learning_rate=0.01, max_depth=6)
+                LogisticRegressionModel(X=X, y=y_bin, C=1.0, penalty="l2", max_iter=1000, random_state=rs),
+                SVMModel(X=X, y=y_bin, C=1.0, kernel="rbf", probability=True, random_state=rs),
+                RandomForestModel(X=X, y=y_bin, n_estimators=1000, max_depth=None, random_state=rs),
+                XGBoostModel(X=X, y=y_bin, n_estimators=2000, learning_rate=0.01, max_depth=6, random_state=rs)
             ]
             # tạo folder save
             save_folder = "models_all/"

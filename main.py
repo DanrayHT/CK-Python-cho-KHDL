@@ -1,6 +1,6 @@
 import configparser
 import argparse
-import ast  # Dùng để chuyển đổi chuỗi patient_data thành list
+import ast
 from Script.DP import DataPreprocessor
 from Script.LR import LogisticRegressionModel
 from Script.SVM import SVMModel
@@ -153,10 +153,29 @@ if __name__ == "__main__":
                 RandomForestModel(X=X, y=y_bin, n_estimators=1000, max_depth=None, random_state=rs),
                 XGBoostModel(X=X, y=y_bin, n_estimators=2000, learning_rate=0.01, max_depth=6, random_state=rs)
             ]
+            param_grids = {
+                "LogisticRegression": {"C": [0.01, 0.1, 1, 10], "penalty": ["l2"], "max_iter":[500,1000]},
+                "SVM": {"C": [0.1, 1, 10], "gamma": ["scale","auto"], "kernel": ["rbf"]},
+                "RandomForest": {"n_estimators": [50,100,200], "max_depth": [None,5,10]},
+                "XGBoost": {"n_estimators": [50,100,200], "learning_rate": [0.01,0.1,0.2], "max_depth":[3,6,9]}
+            }
             # tạo folder save
             save_folder = "models_all/"
             # Train và evaluate models
             for model in models:
+                
+                model.split_data()
+                # Tối ưu siêu tham số nếu có param_grid
+                if model.name in param_grids:
+                    print("Optimizing hyperparameters...")
+                    best = model.optimize_params(
+                        param_grid=param_grids[model.name],
+                        search="grid",
+                        cv=3,
+                        scoring="recall",   # ưu tiên recall cho bệnh tim
+                        n_jobs=-1,
+                        verbose=1
+                    )
                 model.fit()
                 
                 path = f"{save_folder}{model.get_name()}.pkl"

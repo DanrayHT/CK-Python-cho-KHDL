@@ -4,10 +4,12 @@ import os
 import logging
 from datetime import datetime
 import joblib
+import json
 from typing import Union, Dict, Any, Callable, List, Optional
 from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, ConfusionMatrixDisplay, roc_curve, auc, precision_recall_curve, average_precision_score
 import matplotlib.pyplot as plt
+import shap
 
 # Thiết lập logger
 logger = logging.getLogger(__name__)
@@ -201,7 +203,7 @@ class BaseModel:
             NotFittedError: chưa huấn luyện mô hình
         """
         if not self.is_fitted():
-            raise NotFittedError("Mô hình chưa được huấn luyện.")
+            raise NotFittedError(f"{self.name} Chưa được huấn luyện.")
         X_np = _to_numpy(X)
         return self._model.predict(X_np)
 
@@ -242,7 +244,7 @@ class BaseModel:
         """
         if X is None or y is None:
             if self.__X_test is None or self.__y_test is None:
-                raise ValueError("Thiếu dữ liệu truyền vào. Truyền lại dữ liệu hoặc thực hiện split_data() trước")
+                raise ValueError("Không có dữ liệu test. Vui lòng cung cấp X và y hoặc gọi split_data() trước đó.")
             X = self.__X_test
             y = self.__y_test
         X_np = _to_numpy(X)
@@ -363,7 +365,7 @@ class BaseModel:
         if self._model is None:
             self.build_model()
         if self._X is None or self._y is None:
-            raise ValueError("Dữ liệu chưa được truyền vào. Truyền lại dữ liệu hoặc split_data() trước")
+            raise ValueError("Vui lòng cung cấp X và y khi khởi tạo hoặc trước khi gọi cross_validate()")
         X_np = _to_numpy(self._X)
         y_np = _to_numpy(self._y)
         logger.info(f"[{self.name}] Chạy cross-validation với {cv} fold...")
@@ -397,6 +399,36 @@ class BaseModel:
                 return None
         return None
 
+
+    def explain(self, X_sample: Union[pd.DataFrame, np.ndarray], n_samples: int = 100) -> Optional[Any]:
+        """
+        Tạo SHAP để giải thích mô hình
+        Args:
+            X_sample: Dữ liệu đặc trưng mà ta muốn giải thích
+            nsaples: số quan sát cần giải thích
+        Return:
+            shap_values hoặc none
+        Raises:
+            NotFittedError: mô hình chưa được huấn luyện
+        """
+        if not self.is_fitted():
+            raise NotFittedError("Mô hình chưa được huấn luyện")
+        X_np = _to_numpy(X_sample)
+        X_np = X_np[:n_samples]
+
+        explainer = None
+        try:
+            if hasattr(self._model, "predict_proba"):
+                explainer = shap.Explainer(self._model.predict_proba, X_np)
+            else:
+                explainer = shap.Explainer(self._model.predict, X_np)
+            shap_values = explainer(X_np)
+            return shap_values
+        except Exception as e:
+            print("SHAP giải thích thất bại:", e)
+            return None
+
+
     def save_model(self, path: str) -> None:
         """
         Hàm dùng để lưu lại mô hình
@@ -428,6 +460,113 @@ class BaseModel:
         inst._model = payload.get("model", inst._model)
         inst._is_fitted = payload.get("is_fitted", False)
         return inst
+
+    def _format_results_for_saving(self, 
+                                    X: Optional[np.ndarray] = None,
+                                    y: Optional[np.ndarray] = None) -> Dict[str, Any]:
+        """
+        Chuẩn bị dữ liệu kết quả để lưu vào file
+        
+        Args:
+            X: Dữ liệu test (optional)
+            y: Nhãn test (optional)
+            
+        Return:
+            Dictionary chứa các metrics và metadata
+        """
+        # Đánh giá model
+        eval_results = self.evaluate(X, y)
+        
+        # Tổng hợp thông tin
+        results = {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "model_name": self.name,
+            "accuracy": eval_results.get("accuracy"),
+            "precision": eval_results.get("precision"),
+            "recall": eval_results.get("recall"),
+            "f1": eval_results.get("f1"),
+            "roc_auc": eval_results.get("roc_auc"),
+            "random_state": self._random_state,
+            "test_size": self._test_size,
+            "best_params": str(self._meta.get("best_params")),
+            "best_score": self._meta.get("best_score"),
+            "trained_at": str(self._meta.get("trained_at")),
+        }
+        
+        return results
+
+    def save_experiment_results(self,
+                                filepath: str = "experiment_results.csv",
+                                format: str = "csv",
+                                X: Optional[Union[pd.DataFrame, np.ndarray]] = None,
+                                y: Optional[Union[pd.Series, np.ndarray]] = None) -> None:
+        """
+        Lưu kết quả thực nghiệm vào file CSV hoặc JSON
+        
+        Args:
+            filepath: Đường dẫn file để lưu kết quả
+            format: Định dạng file - "csv" hoặc "json"
+            X: Dữ liệu test (dùng self.__X_test nếu None)
+            y: Nhãn test (dùng self.__y_test nếu None)
+        
+        Raises:
+            NotFittedError: Nếu model chưa được train
+            ValueError: Nếu format không hợp lệ
+        """
+        if not self._is_fitted:
+            raise NotFittedError(f"{self.name} chưa được huấn luyện")
+        
+        if format not in ["csv", "json"]:
+            raise ValueError("format phải là 'csv' hoặc 'json'")
+        
+        # Lấy kết quả
+        results = self._format_results_for_saving(X, y)
+        
+        # Lưu theo format
+        if format == "csv":
+            self._save_to_csv(results, filepath)
+        else:
+            self._save_to_json(results, filepath)
+        
+        print(f"✓ Đã lưu kết quả thực nghiệm của {self.name} vào {filepath}")
+
+    def _save_to_csv(self, results: Dict[str, Any], filepath: str) -> None:
+        """
+        Lưu kết quả vào file CSV
+        
+        Args:
+            results: Dictionary chứa kết quả
+            filepath: Đường dẫn file CSV
+        """
+        parent_dir = os.path.dirname(filepath)
+        if parent_dir and not os.path.exists(parent_dir):
+            os.makedirs(parent_dir)
+            print(f"Đã tạo thư mục: '{parent_dir}'")
+
+        df = pd.DataFrame([results])
+
+        # Append nếu file đã tồn tại, ngược lại tạo mới với header
+        if os.path.exists(filepath):
+            df.to_csv(filepath, mode='a', header=False, index=False)
+        else:
+            df.to_csv(filepath, index=False)
+
+    def _save_to_json(self, results: Dict[str, Any], filepath: str) -> None:
+        """
+        Lưu kết quả vào file JSON (JSONL format - mỗi dòng là 1 JSON object)
+        
+        Args:
+            results: Dictionary chứa kết quả
+            filepath: Đường dẫn file JSON
+        """
+        parent_dir = os.path.dirname(filepath)
+        if parent_dir and not os.path.exists(parent_dir):
+            os.makedirs(parent_dir)
+            print(f"Đã tạo thư mục: '{parent_dir}'")
+            
+        with open(filepath, 'a', encoding='utf-8') as f:
+            json.dump(results, f, ensure_ascii=False)
+            f.write('\n')
 
 
     def is_fitted(self) -> bool:
@@ -497,7 +636,7 @@ class BaseModel:
         y_pred = self._model.predict(self.__X_test)
 
         ConfusionMatrixDisplay.from_predictions(self.__y_test, y_pred)
-        plt.title(f"Confusion Matrix - {self.name}")
+        plt.title(f"Ma trận nhầm lẫn - {self.name}")
         plt.show()
 
     def plot_roc_pr(self):
@@ -519,9 +658,9 @@ class BaseModel:
         roc_auc = auc(fpr, tpr)
         plt.plot(fpr, tpr, label=f"{self.name} (AUC={roc_auc:.3f})")
         plt.plot([0,1],[0,1],'k--')
-        plt.xlabel("False Positive Rate")
-        plt.ylabel("True Positive Rate")
-        plt.title("ROC Curve")
+        plt.xlabel("Tỷ lệ dương tính giả")
+        plt.ylabel("Tỷ lệ dương tính thật")
+        plt.title("Đường cong ROC")
         plt.legend(loc="lower right")
 
         # === Precision–Recall Curve ===
@@ -529,9 +668,9 @@ class BaseModel:
         precision, recall, _ = precision_recall_curve(y_true, y_scores)
         ap = average_precision_score(y_true, y_scores)
         plt.plot(recall, precision, label=f"{self.name} (AP={ap:.3f})")
-        plt.xlabel("Recall")
-        plt.ylabel("Precision")
-        plt.title("Precision–Recall Curve")
+        plt.xlabel("Độ phủ (Recall)")
+        plt.ylabel("Độ chính xác (Precision)")
+        plt.title("Đường cong Precision-Recall")
         plt.legend(loc="lower left")
 
         plt.tight_layout()
@@ -546,4 +685,4 @@ class BaseModel:
         elif hasattr(model, "decision_function"):
             return model.decision_function(X)
         else:
-            raise ValueError(f"Model {model} không hỗ trợ predict_proba hoặc decision_function")
+            raise ValueError(f"Mô hình {model} không hỗ trợ predict_proba hoặc decision_function")

@@ -1,4 +1,5 @@
-from .model import BaseModel
+
+from .model import BaseModel, NotFittedError
 import numpy as np
 import pandas as pd
 from typing import Union, Optional
@@ -42,8 +43,13 @@ class SVMModel(BaseModel):
         return self
     
     def plot_feature_importance(self):
-        if not hasattr(self._model, "support_"):
-            raise RuntimeError("Model must be fitted before calling plot(). Please fit the model first.")
+        """Hàm vẽ biểu đồ thể hiện độ quan trọng của từng đặc trung dữ liệu
+
+        Raises:
+            NotFittedError: Mô hình chưa được huấn luyện
+        """
+        if not self.is_fitted():
+            raise NotFittedError("Mô hình chưa được huấn luyện")
     
         X_np = self._X.values if isinstance(self._X, pd.DataFrame) else self._X
         r = permutation_importance(self._model, X_np, self._y, n_repeats=15, random_state=42)

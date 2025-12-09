@@ -1,6 +1,6 @@
 import configparser
 import argparse
-import ast
+import ast  # Dùng để chuyển đổi chuỗi patient_data thành list
 from Script.DP import DataPreprocessor
 from Script.LR import LogisticRegressionModel
 from Script.SVM import SVMModel
@@ -78,6 +78,11 @@ def load_config():
     parser.add_argument('--patient_info', type=str, 
                         default=config.get('PATIENT_INFO', 'patient_data'),
                         help="Thông tin bệnh nhân mới dưới dạng chuỗi các giá trị được phân cách bằng dấu phẩy.")
+    
+    parser.add_argument('--metric', type=str,
+                        default=config.get('MODEL_SELECTION', 'metric', fallback='recall'),
+                        choices=['accuracy', 'f1', 'precision', 'recall'],
+                        help="Chỉ số để lựa chọn mô hình tốt nhất (ModelSelector).")
 
     args = parser.parse_args()
     
@@ -94,8 +99,12 @@ def load_config():
         'outlier_strategy': args.outlier_strategy,
         'detection_params': {'z_score_threshold': args.detection_params}
     }
+
+    model_selection_params = {
+        'metric': args.metric
+    }
     
-    return preprocessing_params, patient_info_list
+    return preprocessing_params, patient_info_list, model_selection_params
 
 ####################################################################################################################
 
@@ -103,7 +112,7 @@ if __name__ == "__main__":
     original_stdout = sys.stdout
     try:
         # --- BƯỚC 1: ĐỌC CẤU HÌNH VÀ THAM SỐ DÒNG LỆNH ---
-        preprocessing_params, patient_info = load_config()
+        preprocessing_params, patient_info, model_selection_params = load_config()
 
         input_file = preprocessing_params['input_file']
         
@@ -157,7 +166,7 @@ if __name__ == "__main__":
                 cv_score = model.cross_validate(cv=5)
 
             # Chọn best model
-            test = ModelSelector(models=models, metric='recall')
+            test = ModelSelector(models=models, metric=model_selection_params['metric'])
             test.set_best_model()
             best_model = test.get_best_model()[0]["model"]
 

@@ -1,4 +1,4 @@
-from .model import BaseModel
+from .model import BaseModel, NotFittedError
 import numpy as np
 import pandas as pd
 from typing import Union, Optional
@@ -38,14 +38,23 @@ class LogisticRegressionModel(BaseModel):
 
 
     def build_model(self):
+        """Hàm xây dựng mô hình
+        """
         self._model = LogisticRegression(**self._init_params)
         return self
     
     def plot_feature_importance(self):
+        """Hàm vẽ biểu đồ thể hiện độ quan trọng của từng đặc trung dữ liệu
+        Raise:
+            NotFittedError: Mô hình chưa được huấn luyện
+        """
+        if not self.is_fitted():
+            raise NotFittedError("Mô hình chưa được huấn luyện")
+        
         coefs = self._model.coef_[0]
         plt.figure(figsize=(12, 6))
         plt.barh(self._X.columns, coefs)
-        plt.title(f"Logistic RegressionModel")
+        plt.title(f"Logistic Regression Model")
         plt.xlabel("Coefficient Value")
         plt.tight_layout()
         plt.show()

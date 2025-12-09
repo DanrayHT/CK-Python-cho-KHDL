@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import logging
 from datetime import datetime
 import joblib
 from typing import Union, Dict, Any, Callable, List, Optional
@@ -8,6 +9,9 @@ from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSe
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, ConfusionMatrixDisplay, roc_curve, auc, precision_recall_curve, average_precision_score
 import matplotlib.pyplot as plt
 import shap
+
+# Thiết lập logger
+logger = logging.getLogger(__name__)
 
 # hàm hỗ trợ
 def _to_numpy(X: Union[pd.DataFrame, pd.Series, np.ndarray]) -> np.ndarray:
@@ -126,6 +130,7 @@ class BaseModel:
         self.__X_train, self.__X_test, self.__y_train, self.__y_test = train_test_split(
             X_np, y_np, test_size=ts, random_state=rs, stratify=y_np if len(np.unique(y_np)) > 1 else None
         )
+        logger.info(f"[{self.name}] Data split completed: Training size={len(self.__X_train)}, Test size={len(self.__X_test)}")
 
 
     def build_model(self):
@@ -169,9 +174,11 @@ class BaseModel:
             self.build_model()
 
 
+        logger.info(f"[{self.name}] Starting model training...")
         self._model.fit(self.__X_train, self.__y_train, **fit_kwargs)
         self._is_fitted = True
         self._meta["trained_at"] = datetime.now()
+        logger.info(f"[{self.name}] Training completed successfully at {self._meta['trained_at']}")
 
 
         if X_val is not None and y_val is not None:
@@ -320,6 +327,9 @@ class BaseModel:
         if X_train is None or y_train is None:
             raise ValueError("Dữ liệu X,y chưa được truyền vào ( hoặc chưa gọi split_data())")
 
+        logger.info(f"[{self.name}] Starting hyperparameter optimization using {search.upper()} search...")
+        logger.info(f"[{self.name}] Parameter grid: {param_grid}")
+        
         if search == "grid":
             searcher = GridSearchCV(self._model, param_grid, cv=cv, scoring=scoring, n_jobs=n_jobs, verbose=verbose)
             searcher.fit(X_train, y_train)
@@ -327,11 +337,15 @@ class BaseModel:
             searcher = RandomizedSearchCV(self._model, param_distributions=param_grid, n_iter=n_iter, cv=cv, scoring=scoring, n_jobs=n_jobs, verbose=verbose)
             searcher.fit(X_train, y_train)
 
-
         self._model = searcher.best_estimator_
         self._meta["best_params"] = searcher.best_params_
         self._meta["best_score"] = float(searcher.best_score_)
         self._is_fitted = True
+        
+        logger.info(f"[{self.name}] Optimization completed!")
+        logger.info(f"[{self.name}] Best parameters: {searcher.best_params_}")
+        logger.info(f"[{self.name}] Best CV score ({scoring or 'default'}): {searcher.best_score_:.4f}")
+        
         return {"best_params": searcher.best_params_, "best_score": float(searcher.best_score_)}
 
 
@@ -353,7 +367,10 @@ class BaseModel:
             raise ValueError("Provide X and y at init or before calling cross_validate()")
         X_np = _to_numpy(self._X)
         y_np = _to_numpy(self._y)
+        logger.info(f"[{self.name}] Running {cv}-fold cross-validation...")
         scores = cross_val_score(self._model, X_np, y_np, cv=cv, scoring=scoring, n_jobs=n_jobs)
+        logger.info(f"[{self.name}] CV scores: {scores}")
+        logger.info(f"[{self.name}] CV mean: {np.mean(scores):.4f} (+/- {np.std(scores):.4f})")
         return {"cv_scores": scores.tolist(), "cv_mean": float(np.mean(scores)), "cv_std": float(np.std(scores))}
 
 
@@ -429,6 +446,7 @@ class BaseModel:
             "is_fitted": self._is_fitted,
         }
         joblib.dump(payload, path)
+        logger.info(f"[{self.name}] Model saved successfully to {path}")
 
     @classmethod
     def load_model(cls, path: str) -> "BaseModel":

@@ -50,7 +50,7 @@ Yêu cầu: **Python 3.8+**
 1.  **Clone repository:**
 
     ```bash
-    git clone [https://github.com/DanrayHT/CK-Python-cho-KHDL.git](https://github.com/DanrayHT/CK-Python-cho-KHDL.git)
+    git clone https://github.com/DanrayHT/CK-Python-cho-KHDL.git
     cd CK-Python-cho-KHDL
     ```
 

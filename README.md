@@ -86,6 +86,10 @@ patient_data = 37, "Male", "Cleveland", "non-anginal", 130.0, 250.0, False, "nor
 
 [MODEL_SELECTION]
 metric = recall
+
+[OUTPUT]
+result_name = models_data/experiment_results
+format = csv
 ```
 
 ### 5.2. Chạy chương trình
@@ -124,6 +128,8 @@ Bạn có thể ghi đè các tham số trong file config bằng các cờ (flag
   * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`float`)
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
+  * `--result_name`: Thay đổi đường dẫn và tên file lưu thông số model
+  * `-result_forma`: Chọn loại tệp lưu thông số model (`csv`, `json`)
 
 **Ví dụ 1: Thay đổi chiến lược xử lý dữ liệu**
 

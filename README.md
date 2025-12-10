@@ -33,7 +33,7 @@ CK-Python-cho-KHDL/
 ├── Data/                   # Chứa dữ liệu dataset
 ├── Docs/                   # Tài liệu báo cáo, slide thuyết trình
 ├── Script/                 # Mã nguồn chính (Source code)
-├── configs/                # Chứa các file cấu hình)
+├── configs/                # Chứa các file cấu hình
 ├── models_all/             # Chứa các model đã save sau khi chạy với random state 42
 ├── models_data/            # Chứa các chỉ số của model sau khi chạy với random state 42
 ├── notebook/               # Jupyter Notebooks cho kết quả cũng như các plot

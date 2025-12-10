@@ -399,36 +399,6 @@ class BaseModel:
                 return None
         return None
 
-
-    def explain(self, X_sample: Union[pd.DataFrame, np.ndarray], n_samples: int = 100) -> Optional[Any]:
-        """
-        Tạo SHAP để giải thích mô hình
-        Args:
-            X_sample: Dữ liệu đặc trưng mà ta muốn giải thích
-            nsaples: số quan sát cần giải thích
-        Return:
-            shap_values hoặc none
-        Raises:
-            NotFittedError: mô hình chưa được huấn luyện
-        """
-        if not self.is_fitted():
-            raise NotFittedError("Mô hình chưa được huấn luyện")
-        X_np = _to_numpy(X_sample)
-        X_np = X_np[:n_samples]
-
-        explainer = None
-        try:
-            if hasattr(self._model, "predict_proba"):
-                explainer = shap.Explainer(self._model.predict_proba, X_np)
-            else:
-                explainer = shap.Explainer(self._model.predict, X_np)
-            shap_values = explainer(X_np)
-            return shap_values
-        except Exception as e:
-            print("SHAP giải thích thất bại:", e)
-            return None
-
-
     def save_model(self, path: str) -> None:
         """
         Hàm dùng để lưu lại mô hình

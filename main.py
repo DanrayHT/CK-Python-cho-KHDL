@@ -116,10 +116,12 @@ def load_config():
         patient_info_list = list(ast.literal_eval(args.patient_info))
     except Exception as e:
         raise ValueError(f"Lỗi khi phân tích patient_info: {args.patient_info}. Đảm bảo định dạng chính xác. Lỗi: {e}")
+    
+    random_state_final = None if args.random_state == -1 else args.random_state
 
     preprocessing_params = {
         'input_file': args.input_file,
-        'random_state': args.random_state,
+        'random_state': random_state_final,
         'missing_strategy_num': args.missing_strategy_num,
         'missing_strategy_cat': args.missing_strategy_cat,
         'outlier_strategy': args.outlier_strategy,

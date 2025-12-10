@@ -96,6 +96,15 @@ def load_config():
                         default=config.get('MODEL_SELECTION', 'metric', fallback='recall'),
                         choices=['accuracy', 'f1', 'precision', 'recall'],
                         help="Chỉ số để lựa chọn mô hình tốt nhất (ModelSelector).")
+    # Thêm tham số đường dẫn file kết quả
+    parser.add_argument('--result_name', type=str, 
+                        default=config.get('OUTPUT', 'result_name', fallback='models_data/experiment_results'), 
+                        help="Đường dẫn để lưu file kết quả và tên file.")
+
+    # Thêm tham số định dạng file (csv/json)
+    parser.add_argument('--result_format', type=str, 
+                        default=config.get('OUTPUT', 'format', fallback='csv'), 
+                        help="Định dạng file lưu trữ (csv, json).")
 
     args = parser.parse_args()
     
@@ -116,8 +125,13 @@ def load_config():
     model_selection_params = {
         'metric': args.metric
     }
+
+    result_param = {
+        'name': args.result_name,
+        'type': args.result_format
+    }
     
-    return preprocessing_params, patient_info_list, model_selection_params
+    return preprocessing_params, patient_info_list, model_selection_params, result_param
 
 ####################################################################################################################
 
@@ -126,7 +140,7 @@ if __name__ == "__main__":
     try:
         # --- BƯỚC 1: ĐỌC CẤU HÌNH VÀ THAM SỐ DÒNG LỆNH ---
         logger.info("BƯỚC 1: Đọc cấu hình và tham số dòng lệnh")
-        preprocessing_params, patient_info, model_selection_params = load_config()
+        preprocessing_params, patient_info, model_selection_params, result_param = load_config()
 
         input_file = preprocessing_params['input_file']
         logger.info(f"File đầu vào: {input_file}")
@@ -209,8 +223,8 @@ if __name__ == "__main__":
                 
                 # LƯU KẾT QUẢ THỰC NGHIỆM VÀO FILE CSV
                 model.save_experiment_results(
-                    filepath="models_data/experiment_results.csv",
-                    format="csv"
+                    filepath=result_param['name'] + '.' + result_param['type'],
+                    format=result_param['type']
                 )
                 logger.info(f"Đã lưu kết quả thực nghiệm của {model.get_name()}")
 

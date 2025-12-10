@@ -81,8 +81,8 @@ outlier_strategy = clip
 detection_params_z_score_threshold = 2.5
 
 [PATIENT_INFO]
-# Thông tin bệnh nhân mới: [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal, num]
-patient_data = 37, "Male", "Cleveland", "non-anginal", 130.0, 250.0, False, "normal", 187.0, False, 3.5, "downsloping", 0.0, "normal", 0
+# Thông tin bệnh nhân mới: [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
+patient_data = 37, "Male", "Cleveland", "non-anginal", 130.0, 250.0, False, "normal", 187.0, False, 3.5, "downsloping", 0.0, "normal"
 
 [MODEL_SELECTION]
 metric = recall
@@ -134,7 +134,7 @@ python main.py --outlier_strategy drop --detection_params 3.0
 **Ví dụ 2: Dự đoán nhanh cho một bệnh nhân khác**
 
 ```bash
-python main.py --patient_info "60, 'Male', 'Cleveland', 'asymptomatic', 140.0, 260.0, False, 'normal', 150.0, True, 2.0, 'flat', 1.0, 'normal', 0"
+python main.py --patient_info "60, 'Male', 'Cleveland', 'asymptomatic', 140.0, 260.0, False, 'normal', 150.0, True, 2.0, 'flat', 1.0, 'normal'"
 ```
 
 -----

@@ -498,7 +498,7 @@ class BaseModel:
         else:
             self._save_to_json(results, filepath)
         
-        print(f"✓ Đã lưu kết quả thực nghiệm của {self.name} vào {filepath}")
+        print(f"Đã lưu kết quả thực nghiệm của {self.name} vào {filepath}")
 
     def _save_to_csv(self, results: Dict[str, Any], filepath: str) -> None:
         """

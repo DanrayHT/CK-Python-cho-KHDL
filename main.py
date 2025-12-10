@@ -42,7 +42,6 @@ def load_config():
     # Thiết lập Argparse (Đọc trước để lấy đường dẫn file config)
     parser = argparse.ArgumentParser(description="Script Huấn Luyện Mô Hình và Dự Đoán.")
     
-    # THÊM DÒNG MỚI: Đối số cho đường dẫn file cấu hình
     parser.add_argument('--config', type=str, default='configs/default.ini',
                         help='Đường dẫn tới file cấu hình (mặc định: configs/default.ini)')
 
@@ -96,12 +95,11 @@ def load_config():
                         default=config.get('MODEL_SELECTION', 'metric', fallback='recall'),
                         choices=['accuracy', 'f1', 'precision', 'recall'],
                         help="Chỉ số để lựa chọn mô hình tốt nhất (ModelSelector).")
-    # Thêm tham số đường dẫn file kết quả
+
     parser.add_argument('--result_name', type=str, 
                         default=config.get('OUTPUT', 'result_name', fallback='models_data/experiment_results'), 
                         help="Đường dẫn để lưu file kết quả và tên file.")
 
-    # Thêm tham số định dạng file (csv/json)
     parser.add_argument('--result_format', type=str, 
                         default=config.get('OUTPUT', 'format', fallback='csv'), 
                         help="Định dạng file lưu trữ (csv, json).")

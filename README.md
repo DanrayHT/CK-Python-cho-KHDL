@@ -125,9 +125,9 @@ Chương trình có thể ghi đè các tham số trong file config bằng các 
 
   * `--config`: Đường dẫn file config khác.
   * `--input_file`: Đường dẫn file dataset.
-  * `--random_state`: Chọn seed để có thể tái tạo kết quả (`int` hoặc `None` để hoàn toàn ngẫu nhiên).
+  * `--random_state`: Chọn seed để có thể tái tạo kết quả (`int` hoặc `-1` = None để hoàn toàn ngẫu nhiên).
   * `--missing_strategy_num`: Cách xử lý biến numeric (`mean`, `median`, `most_frequent`).
-  * `--missing_strategy_cat`: Cách xử lý biến category (`most_frequent`, `constant`).
+  * `--missing_strategy_cat`: Cách xử lý biến category (`most_frequent`, `constant`='missing_category').
   * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`float`)
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--test_size`: họn kích cỡ tập test (từ `0.0` tới `1.0`)

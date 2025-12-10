@@ -36,7 +36,7 @@ CK-Python-cho-KHDL/
 ├── configs/                # Chứa các file cấu hình)
 ├── models_all/             # Chứa các model đã save sau khi chạy với random state 42
 ├── models_data/            # Chứa các chỉ số của model sau khi chạy với random state 42
-├── notebook/               # Jupyter Notebooks cho EDA và kiểm thử
+├── notebook/               # Jupyter Notebooks cho kết quả cũng như các plot
 ├── main.py                 # File main để chạy dự đoán
 ├── requirements.txt        # Các thư viện cần thiết
 └── README.md               # Thông tin dự án

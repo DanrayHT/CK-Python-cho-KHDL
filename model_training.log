@@ -1,0 +1,148 @@
+2025-12-10 08:32:45 - __main__ - INFO - ================================================================================
+2025-12-10 08:32:45 - __main__ - INFO - PIPELINE HUẤN LUYỆN MÔ HÌNH BẮT ĐẦU
+2025-12-10 08:32:45 - __main__ - INFO - ================================================================================
+2025-12-10 08:32:45 - __main__ - INFO - BƯỚC 1: Đọc cấu hình và tham số dòng lệnh
+2025-12-10 08:32:45 - __main__ - INFO - File đầu vào: Data/heart_disease_uci.csv
+2025-12-10 08:32:45 - __main__ - INFO - Chỉ số lựa chọn mô hình: recall
+2025-12-10 08:32:45 - __main__ - INFO - 
+BƯỚC 2: Tiền xử lý dữ liệu
+2025-12-10 08:32:45 - __main__ - INFO - Đang tải dữ liệu...
+2025-12-10 08:32:45 - Script.DP - INFO - Đã xóa cột 'id'
+2025-12-10 08:32:45 - Script.DP - INFO - Phát hiện - Numeric: 6, Categorical: 8, Datetime: 0
+2025-12-10 08:32:45 - Script.DP - INFO - Đã load dữ liệu thành công: (920, 15)
+2025-12-10 08:32:45 - Script.DP - INFO - Bắt đầu auto preprocessing pipeline...
+2025-12-10 08:32:45 - Script.DP - INFO - Bắt đầu xử lí missing values...
+2025-12-10 08:32:45 - Script.DP - INFO - Hoàn tất xử lí missing. Còn lại: 0
+2025-12-10 08:32:45 - Script.DP - INFO - Tìm thấy 257 outliers
+2025-12-10 08:32:45 - Script.DP - INFO - Bắt đầu quy trình phát hiện và xử lí outliers cho 6 cột số.
+2025-12-10 08:32:45 - Script.DP - INFO - Hoàn tất phát hiện. Tìm thấy tổng cộng 257 outliers trong 6 cột.
+2025-12-10 08:32:45 - Script.DP - INFO - Hoàn tất xử lí outliers tổng thể.
+2025-12-10 08:32:45 - Script.DP - INFO - Label Encoding: 'sex' (2 values)
+2025-12-10 08:32:45 - Script.DP - INFO - OneHot Encoding: 'dataset' (4 values -> 3 cols)
+2025-12-10 08:32:45 - Script.DP - INFO - OneHot Encoding: 'cp' (4 values -> 3 cols)
+2025-12-10 08:32:45 - Script.DP - INFO - Label Encoding: 'fbs' (2 values)
+2025-12-10 08:32:45 - Script.DP - INFO - OneHot Encoding: 'restecg' (3 values -> 2 cols)
+2025-12-10 08:32:45 - Script.DP - INFO - Label Encoding: 'exang' (2 values)
+2025-12-10 08:32:45 - Script.DP - INFO - OneHot Encoding: 'slope' (3 values -> 2 cols)
+2025-12-10 08:32:45 - Script.DP - INFO - OneHot Encoding: 'thal' (3 values -> 2 cols)
+2025-12-10 08:32:45 - Script.DP - INFO - Phát hiện - Numeric: 21, Categorical: 0, Datetime: 0
+2025-12-10 08:32:45 - Script.DP - INFO - Đã chuẩn hóa 21 cột bằng STANDARD
+2025-12-10 08:32:45 - Script.DP - INFO - Hoàn thành preprocessing. Shape: (920, 22)
+2025-12-10 08:32:45 - Script.DP - INFO - Đã lưu vào heart_disease_processed.csv
+2025-12-10 08:32:45 - __main__ - INFO - 
+BƯỚC 3: Chuẩn bị dữ liệu cho mô hình
+2025-12-10 08:32:45 - __main__ - INFO - Kích thước đặc trưng: (920, 21), Phân bố nhãn: {1: 509, 0: 411}
+2025-12-10 08:32:45 - __main__ - INFO - 
+BƯỚC 4: Huấn luyện và tối ưu hóa mô hình
+2025-12-10 08:32:45 - __main__ - INFO - Đang huấn luyện 4 mô hình...
+2025-12-10 08:32:45 - __main__ - INFO - 
+============================================================
+2025-12-10 08:32:45 - __main__ - INFO - Đang huấn luyện mô hình: LogisticRegression
+2025-12-10 08:32:45 - __main__ - INFO - ============================================================
+2025-12-10 08:32:45 - Script.model - INFO - [LogisticRegression] Chia dữ liệu hoàn tất: Kích thước tập train=644, Kích thước tập test=276
+2025-12-10 08:32:45 - Script.model - INFO - [LogisticRegression] Bắt đầu tối ưu siêu tham số sử dụng phương pháp GRID...
+2025-12-10 08:32:45 - Script.model - INFO - [LogisticRegression] Danh sách tham số: {'C': [0.01, 0.1, 1, 10], 'penalty': ['l2'], 'max_iter': [500, 1000]}
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Tối ưu hoàn tất!
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Tham số tốt nhất: {'C': 0.01, 'max_iter': 500, 'penalty': 'l2'}
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Điểm CV tốt nhất (recall): 0.8904
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Bắt đầu huấn luyện mô hình...
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Huấn luyện hoàn tất thành công lúc 2025-12-10 08:32:46.582151
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Lưu mô hình thành công vào models_all/LogisticRegression.pkl
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Chạy cross-validation với 5 fold...
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Điểm CV: [0.82608696 0.6576087  0.9076087  0.86956522 0.6576087 ]
+2025-12-10 08:32:46 - Script.model - INFO - [LogisticRegression] Trung bình CV: 0.7837 (+/- 0.1061)
+2025-12-10 08:32:46 - __main__ - INFO - Đã lưu kết quả thực nghiệm của LogisticRegression
+2025-12-10 08:32:46 - __main__ - INFO - 
+============================================================
+2025-12-10 08:32:46 - __main__ - INFO - Đang huấn luyện mô hình: SVM
+2025-12-10 08:32:46 - __main__ - INFO - ============================================================
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Chia dữ liệu hoàn tất: Kích thước tập train=644, Kích thước tập test=276
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Bắt đầu tối ưu siêu tham số sử dụng phương pháp GRID...
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Danh sách tham số: {'C': [0.1, 1, 10], 'gamma': ['scale', 'auto'], 'kernel': ['rbf']}
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Tối ưu hoàn tất!
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Tham số tốt nhất: {'C': 0.1, 'gamma': 'scale', 'kernel': 'rbf'}
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Điểm CV tốt nhất (recall): 0.9298
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Bắt đầu huấn luyện mô hình...
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Huấn luyện hoàn tất thành công lúc 2025-12-10 08:32:46.728133
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Lưu mô hình thành công vào models_all/SVM.pkl
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Chạy cross-validation với 5 fold...
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Điểm CV: [0.82065217 0.64673913 0.93478261 0.92391304 0.64673913]
+2025-12-10 08:32:46 - Script.model - INFO - [SVM] Trung bình CV: 0.7946 (+/- 0.1271)
+2025-12-10 08:32:46 - __main__ - INFO - Đã lưu kết quả thực nghiệm của SVM
+2025-12-10 08:32:46 - __main__ - INFO - 
+============================================================
+2025-12-10 08:32:46 - __main__ - INFO - Đang huấn luyện mô hình: RandomForest
+2025-12-10 08:32:46 - __main__ - INFO - ============================================================
+2025-12-10 08:32:46 - Script.model - INFO - [RandomForest] Chia dữ liệu hoàn tất: Kích thước tập train=644, Kích thước tập test=276
+2025-12-10 08:32:46 - Script.model - INFO - [RandomForest] Bắt đầu tối ưu siêu tham số sử dụng phương pháp GRID...
+2025-12-10 08:32:46 - Script.model - INFO - [RandomForest] Danh sách tham số: {'n_estimators': [50, 100, 200], 'max_depth': [None, 5, 10]}
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Tối ưu hoàn tất!
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Tham số tốt nhất: {'max_depth': 5, 'n_estimators': 100}
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Điểm CV tốt nhất (recall): 0.8790
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Bắt đầu huấn luyện mô hình...
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Huấn luyện hoàn tất thành công lúc 2025-12-10 08:32:47.450993
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Lưu mô hình thành công vào models_all/RandomForest.pkl
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Chạy cross-validation với 5 fold...
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Điểm CV: [0.79891304 0.61956522 0.90217391 0.86956522 0.64673913]
+2025-12-10 08:32:47 - Script.model - INFO - [RandomForest] Trung bình CV: 0.7674 (+/- 0.1149)
+2025-12-10 08:32:47 - __main__ - INFO - Đã lưu kết quả thực nghiệm của RandomForest
+2025-12-10 08:32:47 - __main__ - INFO - 
+============================================================
+2025-12-10 08:32:47 - __main__ - INFO - Đang huấn luyện mô hình: XGBoost
+2025-12-10 08:32:47 - __main__ - INFO - ============================================================
+2025-12-10 08:32:47 - Script.model - INFO - [XGBoost] Chia dữ liệu hoàn tất: Kích thước tập train=644, Kích thước tập test=276
+2025-12-10 08:32:47 - Script.model - INFO - [XGBoost] Bắt đầu tối ưu siêu tham số sử dụng phương pháp GRID...
+2025-12-10 08:32:47 - Script.model - INFO - [XGBoost] Danh sách tham số: {'n_estimators': [50, 100, 200], 'learning_rate': [0.01, 0.1, 0.2], 'max_depth': [3, 6, 9]}
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Tối ưu hoàn tất!
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Tham số tốt nhất: {'learning_rate': 0.01, 'max_depth': 6, 'n_estimators': 50}
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Điểm CV tốt nhất (recall): 0.8612
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Bắt đầu huấn luyện mô hình...
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Huấn luyện hoàn tất thành công lúc 2025-12-10 08:32:48.054554
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Lưu mô hình thành công vào models_all/XGBoost.pkl
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Chạy cross-validation với 5 fold...
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Điểm CV: [0.74456522 0.73913043 0.61956522 0.54891304 0.58695652]
+2025-12-10 08:32:48 - Script.model - INFO - [XGBoost] Trung bình CV: 0.6478 (+/- 0.0800)
+2025-12-10 08:32:48 - __main__ - INFO - Đã lưu kết quả thực nghiệm của XGBoost
+2025-12-10 08:32:48 - __main__ - INFO - 
+BƯỚC 5: Lựa chọn mô hình tốt nhất
+2025-12-10 08:32:48 - __main__ - INFO - Mô hình tốt nhất đã chọn: SVM
+2025-12-10 08:32:48 - __main__ - INFO - recall tốt nhất: 0.8954
+2025-12-10 08:32:48 - __main__ - INFO - 
+BƯỚC 6: Dự đoán cho bệnh nhân mới
+2025-12-10 08:32:48 - Script.DP - INFO - Bắt đầu preprocess bệnh nhân mới: (1, 14)
+2025-12-10 08:32:48 - Script.DP - INFO - Label encoded 'sex'
+2025-12-10 08:32:48 - Script.DP - INFO - OneHot encoded 'dataset'
+2025-12-10 08:32:48 - Script.DP - INFO - OneHot encoded 'cp'
+2025-12-10 08:32:48 - Script.DP - INFO - Label encoded 'fbs'
+2025-12-10 08:32:48 - Script.DP - INFO - OneHot encoded 'restecg'
+2025-12-10 08:32:48 - Script.DP - INFO - Label encoded 'exang'
+2025-12-10 08:32:48 - Script.DP - INFO - OneHot encoded 'slope'
+2025-12-10 08:32:48 - Script.DP - INFO - OneHot encoded 'thal'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'age'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'sex'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'trestbps'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'chol'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'fbs'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'thalch'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'exang'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'oldpeak'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'ca'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'dataset_Hungary'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'dataset_Switzerland'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'dataset_VA Long Beach'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'cp_atypical angina'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'cp_non-anginal'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'cp_typical angina'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'restecg_normal'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'restecg_st-t abnormality'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'slope_flat'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'slope_upsloping'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'thal_normal'
+2025-12-10 08:32:48 - Script.DP - INFO - Scaled 'thal_reversable defect'
+2025-12-10 08:32:48 - Script.DP - INFO - Hoàn thành preprocess. Shape: (1, 21)
+2025-12-10 08:32:48 - __main__ - INFO - Dự đoán: 0, Xác suất: [0.69094887 0.30905113]
+2025-12-10 08:32:48 - __main__ - INFO - 
+================================================================================
+2025-12-10 08:32:48 - __main__ - INFO - KẾT QUẢ CUỐI CÙNG
+2025-12-10 08:32:48 - __main__ - INFO - ================================================================================
+2025-12-10 08:32:48 - __main__ - INFO - Log huấn luyện đã lưu tại: model_training.log

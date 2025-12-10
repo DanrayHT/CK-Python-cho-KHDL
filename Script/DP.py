@@ -804,10 +804,6 @@ class DataPreprocessor:
         
         self.logger.info(f"Bắt đầu preprocess bệnh nhân mới: {new_patient.shape}")
         
-        # Xóa cột target nếu có
-        if 'num' in new_patient.columns:
-            new_patient = new_patient.drop(columns=['num'])
-        
         # Apply encoders đã fit
         for col, encoder in self.encoders.items():
             if col not in new_patient.columns:

@@ -450,7 +450,7 @@ class BaseModel:
         # Tổng hợp thông tin
         results = {
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "model_name": self.name,
+            "model_name": self.get_name(),
             "accuracy": eval_results.get("accuracy"),
             "precision": eval_results.get("precision"),
             "recall": eval_results.get("recall"),

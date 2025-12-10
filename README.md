@@ -101,7 +101,7 @@ Chạy file `main.py` từ thư mục gốc của dự án. Chương trình sẽ
 **Lệnh chạy cơ bản:**
 
 ```bash
-python Script/main.py
+python main.py
 ```
 
 **Kết quả hiển thị:**
@@ -109,7 +109,7 @@ python Script/main.py
 ```text
 Đã đọc cấu hình từ file: configs/default.ini
 Dự đoán: **Không bệnh**
-Xác suất dự đoán: Không bệnh = 85.20%, Có bệnh = 14.80%
+Xác suất dự đoán: Không bệnh = 69.09%, Có bệnh = 30.91%
 ```
 
 ### 5.3. Tùy chỉnh qua dòng lệnh (CLI Arguments)

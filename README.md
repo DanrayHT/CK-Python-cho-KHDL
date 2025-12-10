@@ -133,7 +133,7 @@ Chương trình có thể ghi đè các tham số trong file config bằng các 
   * `--test_size`: họn kích cỡ tập test (từ `0.0` tới `1.0`)
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
   * `--result_name`: Thay đổi đường dẫn và tên file lưu thông số model
-  * `-result_format`: Chọn loại tệp lưu thông số model (`csv`, `json`)
+  * `--result_format`: Chọn loại tệp lưu thông số model (`csv`, `json`)
 
 **Ví dụ 1: Thay đổi chiến lược xử lý dữ liệu**
 

@@ -69,7 +69,7 @@ Hệ thống sử dụng `configparser` để quản lý tham số và `argparse
 
 ### 5.1. File cấu hình (`configs/default.ini`)
 
-Bạn có thể thay đổi các tham số mặc định (đường dẫn dữ liệu, cách xử lý thiếu, thông tin bệnh nhân test) tại đây:
+Chương trình có thể thay đổi các tham số mặc định (đường dẫn dữ liệu, cách xử lý thiếu, thông tin bệnh nhân test) tại đây:
 
 ```ini
 [PREPROCESSING]
@@ -121,7 +121,7 @@ Xác suất dự đoán: Không bệnh = 69.09%, Có bệnh = 30.91%
 
 ### 5.3. Tùy chỉnh qua dòng lệnh (CLI Arguments)
 
-Bạn có thể ghi đè các tham số trong file config bằng các cờ (flags) sau:
+Chương trình có thể ghi đè các tham số trong file config bằng các cờ (flags) sau:
 
   * `--config`: Đường dẫn file config khác.
   * `--input_file`: Đường dẫn file dataset.

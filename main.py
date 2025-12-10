@@ -42,6 +42,7 @@ def load_config():
     # Thiết lập Argparse (Đọc trước để lấy đường dẫn file config)
     parser = argparse.ArgumentParser(description="Script Huấn Luyện Mô Hình và Dự Đoán.")
     
+    # THÊM DÒNG MỚI: Đối số cho đường dẫn file cấu hình
     parser.add_argument('--config', type=str, default='configs/default.ini',
                         help='Đường dẫn tới file cấu hình (mặc định: configs/default.ini)')
 
@@ -86,6 +87,10 @@ def load_config():
     parser.add_argument('--detection_params', type=float, 
                         default=config.getfloat('PREPROCESSING', 'detection_params_z_score_threshold', fallback=2.5),
                         help="Ngưỡng Z-score cho phát hiện outlier.")
+    
+    parser.add_argument('--test_size', type=float, 
+                        default=config.getfloat('MODEL', 'test_size', fallback=0.3),
+                        help="Chọn kích cỡ tập test (từ 0->1)")
                         
     parser.add_argument('--patient_info', type=str, 
                         default=config.get('PATIENT_INFO', 'patient_data'),
@@ -95,11 +100,12 @@ def load_config():
                         default=config.get('MODEL_SELECTION', 'metric', fallback='recall'),
                         choices=['accuracy', 'f1', 'precision', 'recall'],
                         help="Chỉ số để lựa chọn mô hình tốt nhất (ModelSelector).")
-
+    # Thêm tham số đường dẫn file kết quả
     parser.add_argument('--result_name', type=str, 
                         default=config.get('OUTPUT', 'result_name', fallback='models_data/experiment_results'), 
                         help="Đường dẫn để lưu file kết quả và tên file.")
 
+    # Thêm tham số định dạng file (csv/json)
     parser.add_argument('--result_format', type=str, 
                         default=config.get('OUTPUT', 'format', fallback='csv'), 
                         help="Định dạng file lưu trữ (csv, json).")
@@ -120,6 +126,10 @@ def load_config():
         'detection_params': {'z_score_threshold': args.detection_params}
     }
 
+    model_info_params = {
+        'test_size': args.test_size
+    }
+
     model_selection_params = {
         'metric': args.metric
     }
@@ -129,7 +139,7 @@ def load_config():
         'type': args.result_format
     }
     
-    return preprocessing_params, patient_info_list, model_selection_params, result_param
+    return preprocessing_params, model_info_params, patient_info_list, model_selection_params, result_param
 
 ####################################################################################################################
 
@@ -138,7 +148,7 @@ if __name__ == "__main__":
     try:
         # --- BƯỚC 1: ĐỌC CẤU HÌNH VÀ THAM SỐ DÒNG LỆNH ---
         logger.info("BƯỚC 1: Đọc cấu hình và tham số dòng lệnh")
-        preprocessing_params, patient_info, model_selection_params, result_param = load_config()
+        preprocessing_params, model_info_params, patient_info, model_selection_params, result_param = load_config()
 
         input_file = preprocessing_params['input_file']
         logger.info(f"File đầu vào: {input_file}")
@@ -181,10 +191,10 @@ if __name__ == "__main__":
             # Danh sách các model
             logger.info("\nBƯỚC 4: Huấn luyện và tối ưu hóa mô hình")
             models = [
-                LogisticRegressionModel(X=X, y=y_bin, C=1.0, penalty="l2", max_iter=1000, random_state=rs),
-                SVMModel(X=X, y=y_bin, C=1.0, kernel="rbf", probability=True, random_state=rs),
-                RandomForestModel(X=X, y=y_bin, n_estimators=1000, max_depth=None, random_state=rs),
-                XGBoostModel(X=X, y=y_bin, n_estimators=2000, learning_rate=0.01, max_depth=6, random_state=rs)
+                LogisticRegressionModel(X=X, y=y_bin, test_size=model_info_params['test_size'], C=1.0, penalty="l2", max_iter=1000, random_state=rs),
+                SVMModel(X=X, y=y_bin, test_size=model_info_params['test_size'], C=1.0, kernel="rbf", probability=True, random_state=rs),
+                RandomForestModel(X=X, y=y_bin, test_size=model_info_params['test_size'], n_estimators=1000, max_depth=None, random_state=rs),
+                XGBoostModel(X=X, y=y_bin, test_size=model_info_params['test_size'], n_estimators=2000, learning_rate=0.01, max_depth=6, random_state=rs)
             ]
             param_grids = {
                 "LogisticRegression": {"C": [0.01, 0.1, 1, 10], "penalty": ["l2"], "max_iter":[500,1000]},

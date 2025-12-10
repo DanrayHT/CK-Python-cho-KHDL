@@ -791,7 +791,7 @@ class DataPreprocessor:
         columns = [
             "age", "sex", "dataset", "cp", "trestbps", "chol", "fbs",
             "restecg", "thalch", "exang", "oldpeak", "slope",
-            "ca", "thal", "num"
+            "ca", "thal"
         ]
         
         # Convert sang DataFrame

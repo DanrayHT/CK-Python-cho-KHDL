@@ -188,9 +188,9 @@ class DataPreprocessor:
 
     def handle_missing_values(
             self,
-            numeric_strategy: Literal['median', 'mean', 'most_frequent', 'constant'] = 'median',
-            categorical_strategy: Literal['most_frequent'] = 'most_frequent',
-            fill_value_categorical: str | None = 'missing_category'
+            numeric_strategy: Literal['median', 'mean', 'most_frequent'] = 'median',
+            categorical_strategy: Literal['most_frequent', 'constant'] = 'most_frequent',
+            fill_value_categorical: str = 'missing_category'
         ) -> pd.DataFrame:
             """
             Xử lí giá trị thiếu (missing values)
@@ -200,7 +200,6 @@ class DataPreprocessor:
                 - 'median': Điền bằng trung vị (median)
                 - 'mean': Điền bằng trung bình (mean)
                 - 'most_frequent': Điền bằng giá trị phổ biến nhất (mode)
-                - 'constant': Điền bằng một giá trị cố định (fill_value_numeric)
             - Cột phân loại (categorical):
                 - 'most_frequent': Điền bằng giá trị phổ biến nhất (mode)
                 - 'constant': Điền bằng một giá trị cố định (fill_value_categorical)
@@ -210,8 +209,8 @@ class DataPreprocessor:
             Args:
                 numeric_strategy (Literal): Chiến lược xử lý cho cột số. Mặc định là 'median'.
                 categorical_strategy (Literal): Chiến lược xử lý cho cột phân loại. Mặc định là 'most_frequent'.
-                fill_value_numeric (float | int | None): Giá trị cố định để điền cho cột số nếu numeric_strategy='constant'. Mặc định là 0.
-                fill_value_categorical (str | None): Giá trị cố định để điền cho cột phân loại nếu categorical_strategy='constant'. Mặc định là 'missing_category'.
+                fill_value_categorical (str | None): Giá trị cố định để điền khi categorical_strategy='constant'.
+                                                    Nếu để None → sklearn tự dùng 'missing' làm giá trị mặc định.
 
             Returns:
                 pd.DataFrame: DataFrame đã được xử lí missing values
@@ -233,20 +232,19 @@ class DataPreprocessor:
 
             # --- Xử lý missing cho cột categorical ---
             if self.categorical_columns:
-                # Xác định tham số cho SimpleImputer của cột phân loại
-                imputer_params_cat = {}
-                imputer_params_cat['strategy'] = categorical_strategy
+                cat_imputer = SimpleImputer(
+                    strategy=categorical_strategy,
+                    fill_value=fill_value_categorical
+                )
 
-                if categorical_strategy == 'constant':
-                    imputer_params_cat['fill_value'] = fill_value_categorical
-                
-                imputer_cat = SimpleImputer(**imputer_params_cat)
-                
+                # Impute toàn bộ categorical cùng lúc
+                self.data[self.categorical_columns] = cat_imputer.fit_transform(
+                    self.data[self.categorical_columns]
+                )
+
+                # ÉP KIỂU: tránh lỗi boolean + string cho OneHotEncoder
                 for col in self.categorical_columns:
-                    if self.data[col].isnull().any():
-                        # Fit và transform chỉ trên cột có giá trị thiếu
-                        # .ravel() để chuyển từ mảng 2D (sau SimpleImputer) về mảng 1D cho Series
-                        self.data[col] = imputer_cat.fit(self.data[[col]]).transform(self.data[[col]]).ravel()
+                    self.data[col] = self.data[col].astype(str)
 
             remaining = self.data.isnull().sum().sum()
             self.logger.info(f"Hoàn tất xử lí missing. Còn lại: {remaining}")
@@ -803,6 +801,10 @@ class DataPreprocessor:
             new_patient = new_patient_data.copy()
         
         self.logger.info(f"Bắt đầu preprocess bệnh nhân mới: {new_patient.shape}")
+        
+        # Xóa cột target nếu có
+        if 'num' in new_patient.columns:
+            new_patient = new_patient.drop(columns=['num'])
         
         # Apply encoders đã fit
         for col, encoder in self.encoders.items():

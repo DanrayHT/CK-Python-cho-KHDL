@@ -80,6 +80,9 @@ missing_strategy_cat = most_frequent
 outlier_strategy = clip
 detection_params_z_score_threshold = 2.5
 
+[MODEL]
+test_size = 0.3
+
 [PATIENT_INFO]
 # Thông tin bệnh nhân mới: [age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]
 patient_data = 37, "Male", "Cleveland", "non-anginal", 130.0, 250.0, False, "normal", 187.0, False, 3.5, "downsloping", 0.0, "normal"
@@ -127,6 +130,7 @@ Bạn có thể ghi đè các tham số trong file config bằng các cờ (flag
   * `--missing_strategy_cat`: Cách xử lý biến category (`most_frequent`, `constant`).
   * `--detection_params`: Ngưỡng Z-score cho phát hiện outlier. (`float`)
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
+  * `--test_size`: họn kích cỡ tập test (từ `0.0` tới `1.0`)
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
   * `--result_name`: Thay đổi đường dẫn và tên file lưu thông số model
   * `-result_format`: Chọn loại tệp lưu thông số model (`csv`, `json`)

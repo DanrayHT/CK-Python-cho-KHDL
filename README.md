@@ -31,11 +31,11 @@ Dự án được tổ chức theo cấu trúc sau:
 ```text
 CK-Python-cho-KHDL/
 ├── Data/                   # Chứa dữ liệu dataset
-├── Docs/                   # Tài liệu báo cáo, slide thuyết trình
+├── Docs/                   # Tài liệu báo cáo
 ├── Script/                 # Mã nguồn chính (Source code)
 ├── configs/                # Chứa các file cấu hình
-├── models_all/             # Chứa các model đã save sau khi chạy với random state 42
-├── models_data/            # Chứa các chỉ số của model sau khi chạy với random state 42
+├── models_all/             # Chứa các model đã save sau khi chạy
+├── models_data/            # Chứa các chỉ số của model sau khi chạy
 ├── notebook/               # Jupyter Notebooks cho kết quả cũng như các plot
 ├── main.py                 # File main để chạy dự đoán
 ├── requirements.txt        # Các thư viện cần thiết
@@ -129,7 +129,7 @@ Bạn có thể ghi đè các tham số trong file config bằng các cờ (flag
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
   * `--result_name`: Thay đổi đường dẫn và tên file lưu thông số model
-  * `-result_forma`: Chọn loại tệp lưu thông số model (`csv`, `json`)
+  * `-result_format`: Chọn loại tệp lưu thông số model (`csv`, `json`)
 
 **Ví dụ 1: Thay đổi chiến lược xử lý dữ liệu**
 
@@ -147,7 +147,7 @@ python main.py --patient_info "60, 'Male', 'Cleveland', 'asymptomatic', 140.0, 2
 
 ## 6. Dataset
 
-Dự án sử dụng bộ dữ liệu **Heart Disease UCI**.
+Dự án sử dụng bộ dữ liệu [**Heart Disease UCI**](https://www.kaggle.com/datasets/redwankarimsony/heart-disease-data).
 
   * **Đường dẫn:** `Data/heart_disease_uci.csv`
   * **Biến mục tiêu (Target):** `num` (Dự đoán bệnh tim).

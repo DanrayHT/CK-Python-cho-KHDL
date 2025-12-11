@@ -217,7 +217,7 @@ if __name__ == "__main__":
                 if model.name in param_grids:
                     best = model.optimize_params(
                         param_grid=param_grids[model.name],
-                        search="grid",
+                        scoring=model_selection_params['metric'],
                         cv=3,
                         scoring="recall",   # ưu tiên recall cho bệnh tim
                         n_jobs=-1,

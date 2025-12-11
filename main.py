@@ -11,6 +11,8 @@ import sys
 import os
 import logging
 import warnings
+sys.stdout.reconfigure(encoding='utf-8')
+
 
 ####################################################################################################################
 

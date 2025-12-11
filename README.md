@@ -46,7 +46,9 @@ CK-Python-cho-KHDL/
 
 ## 4. Cài đặt
 
-Yêu cầu: **Python 3.8+**
+Yêu cầu: 
+* **Python 3.8+**
+* **Git** (để clone repository)
 
 1.  **Clone repository:**
 

@@ -49,7 +49,6 @@ CK-Python-cho-KHDL/
 Yêu cầu: 
 * **Python 3.8+**
 * **Git** (để clone repository)
-* **Pip** (để cài thư viện)
 
 1.  **Clone repository:**
 
@@ -61,6 +60,7 @@ Yêu cầu:
 2.  **Cài đặt thư viện:**
 
     ```bash
+    pip install --upgrade pip
     pip install -r requirements.txt
     ```
 

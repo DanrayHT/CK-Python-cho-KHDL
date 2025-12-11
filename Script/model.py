@@ -9,7 +9,6 @@ from typing import Union, Dict, Any, Callable, List, Optional
 from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV, cross_val_score
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, ConfusionMatrixDisplay, roc_curve, auc, precision_recall_curve, average_precision_score
 import matplotlib.pyplot as plt
-import shap
 
 # Thiết lập logger
 logger = logging.getLogger(__name__)

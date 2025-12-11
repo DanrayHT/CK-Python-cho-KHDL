@@ -159,7 +159,7 @@ if __name__ == "__main__":
         logger.info(f"Chỉ số lựa chọn mô hình: {model_selection_params['metric']}")
         
         # Tắt stdout tạm thời
-        sys.stdout = open(os.devnull, 'w')
+        sys.stdout = open(os.devnull, 'w', encoding='utf-8')
         
         try:
             # Khởi tạo và xử lý dữ liệu với các tham số đã đọc

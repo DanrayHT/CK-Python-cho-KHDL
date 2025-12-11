@@ -132,6 +132,7 @@ Chương trình có thể ghi đè các tham số trong file config bằng các 
   * `--outlier_strategy`: Cách xử lý outlier (`clip`, `drop`, `impute`).
   * `--test_size`: họn kích cỡ tập test (từ `0.0` tới `1.0`)
   * `--patient_info`: Nhập trực tiếp thông tin bệnh nhân mới (dạng chuỗi list).
+  * `--metric`: Chọn tiêu chí để đánh giá mô hình và lúc tối ưu siêu tham số (`accuracy`, `f1`, `precision`, `recall`)
   * `--result_name`: Thay đổi đường dẫn và tên file lưu thông số model
   * `--result_format`: Chọn loại tệp lưu thông số model (`csv`, `json`)
 

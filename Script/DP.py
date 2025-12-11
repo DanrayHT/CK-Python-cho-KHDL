@@ -163,7 +163,7 @@ class DataPreprocessor:
                             warnings.filterwarnings('ignore')
                             converted = pd.to_datetime(sample, errors='coerce')
                         
-                        # Chỉ coi là datetime nếu ≥80% giá trị convert thành công
+                        # Chỉ coi là datetime nếu >= 80% giá trị convert thành công
                         valid_ratio = converted.notna().sum() / len(sample)
                         if valid_ratio >= 0.8:
                             self.data[col] = pd.to_datetime(self.data[col], errors='coerce')
@@ -209,8 +209,8 @@ class DataPreprocessor:
             Args:
                 numeric_strategy (Literal): Chiến lược xử lý cho cột số. Mặc định là 'median'.
                 categorical_strategy (Literal): Chiến lược xử lý cho cột phân loại. Mặc định là 'most_frequent'.
-                fill_value_categorical (str | None): Giá trị cố định để điền khi categorical_strategy='constant'.
-                                                    Nếu để None → sklearn tự dùng 'missing' làm giá trị mặc định.
+                fill_value_categorical (str): Giá trị cố định để điền khi categorical_strategy='constant'.
+                                                    Mặt định sẽ để 'missing_category' cho chạy model
 
             Returns:
                 pd.DataFrame: DataFrame đã được xử lí missing values
@@ -490,8 +490,8 @@ class DataPreprocessor:
         Tạo đặc trưng tương tác (interaction features) giữa các cặp cột
         
         Từ cặp (x, y), tạo ra:
-        - x × y (phép nhân)
-        - x ÷ y (phép chia)
+        - x * y (phép nhân)
+        - x / y (phép chia)
         - x + y (phép cộng)
         - x - y (phép trừ)
         
